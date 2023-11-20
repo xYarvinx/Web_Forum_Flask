@@ -10,7 +10,8 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         # Logic to create a new user based on the form data
-        user = User(username=form.username.data, password=form.password.data, email=form.email.data)
+        user = User(username=form.username.data, email=form.email.data)
+        user.password = form.password.data
         # Add the new user to the database session
         db.session.add(user)
         db.session.commit()
