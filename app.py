@@ -1,39 +1,21 @@
-from flask import Flask, render_template, redirect, url_for
-from Forum.forms import  RegistrationForm, LoginForm
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/oteba/PycharmProjects/flaskProject/Forumdb'
+db = SQLAlchemy(app)
 
-@app.route('/')
-def index():
-    title = 'Главное меню'
-    return render_template('index.html', title=title)
+from Controller import forum, auth  # Import after db is defined to avoid circular imports
 
-@app.route('/forum')
-def forum():
-    forum_name = 'Форум'
-    return render_template('forum.html', forum_name=forum_name)
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        # Логика обработки формы регистрации
-        return redirect(url_for('index'))
-    return render_template('register.html', form=form)
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        # Логика обработки формы входа
-        return redirect(url_for('index'))
-    return render_template('login.html', form=form)
-
-@app.route('/logout')
-def logout():
-    # Логика выхода пользователя
-    return redirect(url_for('index'))
+app.register_blueprint(forum.forum)
+app.register_blueprint(auth.auth)
 
 if __name__ == '__main__':
+    with app.app_context():  # Use app_context() to ensure proper context initialization
+        db.create_all()
     app.run(debug=True)
+
+# flask shell
+# >>> from app import db
+# >>> db.create_all()
