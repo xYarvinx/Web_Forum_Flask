@@ -15,14 +15,14 @@ auth = Blueprint('auth', __name__)
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        # Logic to create a new user based on the form data
+
         user = User(username=form.username.data, email=form.email.data)
         user.password = form.password.data
-        # Add the new user to the database session
+
         db.session.add(user)
         db.session.commit()
-        # Redirect to the index page after successful registration
-        return redirect(url_for('forum.index'))  # Use the endpoint name 'forum.index' instead of the URL path '/forum'
+
+        return redirect(url_for('forum.index'))
     return render_template('register.html', form=form)
 
 
@@ -31,9 +31,8 @@ def register():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        # Add your logic for user authentication here, for example:
-        from werkzeug.security import generate_password_hash
-        #generate_password_hash(form.password.data)
+
+
         if form.email.data == '123123' and form.password.data == '123123':
             # If user credentials are valid, redirect to the index page
             return redirect(url_for('register.index'))  # Use the endpoint name 'forum.index' instead of the URL path '/forum'
