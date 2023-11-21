@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import os
 
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
@@ -16,8 +17,6 @@ app.register_blueprint(forum.forum)
 app.register_blueprint(auth.auth)
 
 if __name__ == '__main__':
-    with app.app_context():  # Use app_context() to ensure proper context initialization
-        db.create_all()
     app.run(debug=True)
 
 # flask shell
