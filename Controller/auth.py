@@ -6,6 +6,11 @@ from forms import RegistrationForm, LoginForm
 auth = Blueprint('auth', __name__)
 
 
+
+
+
+
+
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
@@ -29,9 +34,9 @@ def login():
         # Add your logic for user authentication here, for example:
         from werkzeug.security import generate_password_hash
         #generate_password_hash(form.password.data)
-        if form.email.data == 'valid_username' and form.password.data == '123123':
+        if form.email.data == '123123' and form.password.data == '123123':
             # If user credentials are valid, redirect to the index page
-            return redirect(url_for('forum.index'))  # Use the endpoint name 'forum.index' instead of the URL path '/forum'
+            return redirect(url_for('register.index'))  # Use the endpoint name 'forum.index' instead of the URL path '/forum'
         else:
             # If user credentials are invalid, you can render the login template again with an error message
             return render_template('login.html', form=form, error='Invalid username or password')
