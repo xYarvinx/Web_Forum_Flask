@@ -5,6 +5,7 @@ from forms import RegistrationForm, LoginForm
 
 auth = Blueprint('auth', __name__)
 
+
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
@@ -19,6 +20,7 @@ def register():
         return redirect(url_for('forum.index'))  # Use the endpoint name 'forum.index' instead of the URL path '/forum'
     return render_template('register.html', form=form)
 
+
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -26,6 +28,7 @@ def login():
         # Логика обработки формы входа
         return redirect(url_for('forum.index'))  # Use the endpoint name 'forum.index' instead of the URL path '/forum'
     return render_template('login.html', form=form)
+
 
 @auth.route('/logout')
 def logout():
