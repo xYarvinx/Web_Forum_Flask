@@ -21,13 +21,22 @@ def register():
     return render_template('register.html', form=form)
 
 
-@auth.route('/login', methods=['GET', 'POST'])
+
+@auth.route('/login', methods=['GET','POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        # Логика обработки формы входа
-        return redirect(url_for('forum.index'))  # Use the endpoint name 'forum.index' instead of the URL path '/forum'
+        # Add your logic for user authentication here, for example:
+        from werkzeug.security import generate_password_hash
+        #generate_password_hash(form.password.data)
+        if form.email.data == 'valid_username' and form.password.data == '123123':
+            # If user credentials are valid, redirect to the index page
+            return redirect(url_for('forum.index'))  # Use the endpoint name 'forum.index' instead of the URL path '/forum'
+        else:
+            # If user credentials are invalid, you can render the login template again with an error message
+            return render_template('login.html', form=form, error='Invalid username or password')
     return render_template('login.html', form=form)
+
 
 
 @auth.route('/logout')

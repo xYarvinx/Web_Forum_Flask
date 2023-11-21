@@ -8,5 +8,8 @@
         {{ form.password.label }} {{ form.password }}
         {{ form.submit }}
     </form>
+     {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
 {% endblock %}
 
