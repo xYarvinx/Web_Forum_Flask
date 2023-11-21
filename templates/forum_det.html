@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ forum.title }}</title>
+</head>
+<body>
+    <h1>{{ forum.title }}</h1>
+    <p>Автор: {{ user.username }}</p>
+    <p>{{ forum.content }}</p>
+    <a href="{{ url_for('forum.edit_forum', forum_id=forum.id) }}">Редактировать пост</a>
+</body>
+</html>
