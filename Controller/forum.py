@@ -1,17 +1,15 @@
 from flask import Blueprint, render_template
-
-from Model.models import ForumPost
-
+from Model.models import ForumPost, User
+from app import db
 
 forum = Blueprint('forum', __name__)
 
-from flask import render_template
-
 @forum.route('/forum/<int:forum_id>')
 def forum_details(forum_id):
-
     forum_data = ForumPost.query.get(forum_id)
-    return render_template('forum_details.html', forum=forum_data)
+    user_data = User.query.get(forum_data.user_id)
+    return render_template('forum_details.html', forum=forum_data, user=user_data)
+
 
 @forum.route('/')
 def index():
