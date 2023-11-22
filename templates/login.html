@@ -1,15 +1,29 @@
+<!-- login.html -->
+
 {% extends "base.html" %}
 {% block title %}Вход{% endblock %}
-{% block content %}
-    <h2>Вход</h2>
-    <form method="POST">
-        {{ form.csrf_token }}
-        {{ form.email.label }} {{ form.email }}
-        {{ form.password.label }} {{ form.password }}
-        {{ form.submit }}
-    </form>
-     {% if error %}
-        <p>{{ error }}</p>
-    {% endif %}
-{% endblock %}
 
+{% block content %}
+    <div class="login-page">
+        <div class="login-container">
+            <h2>Вход</h2>
+            <form method="POST">
+                {{ form.csrf_token }}
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    {{ form.email }}
+                </div>
+                <div class="form-group">
+                    <label for="password">Пароль:</label>
+                    {{ form.password }}
+                </div>
+                <div class="form-group">
+                    {{ form.submit }}
+                </div>
+            </form>
+            {% if error %}
+                <p>{{ error }}</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
