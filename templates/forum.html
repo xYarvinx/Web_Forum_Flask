@@ -6,10 +6,9 @@
     <h1>Добро пожаловать на форум!</h1>
 
     <ul>
-  {% for forum in forums %}
-    <li><a href="{{ url_for('forum.forum_details', forum_id=forum.id) }}">{{ forum.title }}</a></li>
-  {% endfor %}
+        {% for forum in forums %}
+            <li><a href="{{ url_for('forum.forum_details', forum_id=forum.id) }}">{{ forum.title }}</a></li>
+        {% endfor %}
     </ul>
-{#    #}
-
+    {# #}
 {% endblock %}

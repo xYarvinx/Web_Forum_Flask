@@ -1,8 +1,10 @@
+#forum.py
 from flask import Blueprint, render_template, request, redirect, url_for
-from app import app, db
-from Model.models import ForumPost, User
 from forms import CreatePostForm
-from Model.models import Post
+from flask_login import current_user
+from app import db
+from Model.models import User, ForumPost
+
 forum = Blueprint('forum', __name__)
 
 @forum.route('/forum/<int:forum_id>')
@@ -23,15 +25,27 @@ def show_forum():
     forums = ForumPost.query.all()  # Запрос для получения всех форумов из базы данных
     return render_template('forum.html', forum_name=forum_name, forums=forums)  # Передача списка форумов в шаблон
 
-@app.route('/forum', methods=['GET', 'POST'])
-def forum():
+@forum.route('/create_post', methods=['GET', 'POST'])
+def create_post():
     form = CreatePostForm()
     if form.validate_on_submit():
-        title = form.title.data
-        content = form.content.data
-        new_post = Post(title=title, content=content)
-        db.session.add(new_post)
+        post = ForumPost(title=form.title.data, content=form.content.data, user_id=current_user.id)
+        db.session.add(post)
         db.session.commit()
-        return redirect(url_for('forum'))
-    posts = Post.query.all()
-    return render_template('forum_details.html', form=form, posts=posts)
+        return redirect(url_for('forum.show_forum'))
+    return render_template('create_post.html', form=form)
+
+@forum.route('/edit_post/<int:post_id>', methods=['GET', 'POST'])
+def edit_post(post_id):
+    post = ForumPost.query.get_or_404(post_id)
+    if post.user_id != current_user.id: # Обработка случая, когда пользователь не автор поста
+        form = CreatePostForm()
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.content = form.content.data
+        db.session.commit()
+        return redirect(url_for('forum.forum_details', forum_id=post.id))
+    elif request.method == 'GET':
+        form.title.data = post.title
+        form.content.data = post.content
+    return render_template('edit_post.html', form=form, post=post)
