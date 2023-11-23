@@ -19,7 +19,7 @@ app.register_blueprint(forum.forum)
 app.register_blueprint(auth.auth)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=80)
 
 # flask shell
 # >>> from app import db
