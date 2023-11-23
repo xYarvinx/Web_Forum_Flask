@@ -1,6 +1,9 @@
-from flask import Blueprint, render_template
-from Model.models import ForumPost, User
+#forum.py
+from flask import Blueprint, render_template, request, redirect, url_for
+from forms import CreatePostForm
+from flask_login import current_user
 from app import db
+from Model.models import User, ForumPost
 
 forum = Blueprint('forum', __name__)
 
@@ -21,3 +24,28 @@ def show_forum():
     forum_name = 'Форум'
     forums = ForumPost.query.all()  # Запрос для получения всех форумов из базы данных
     return render_template('forum.html', forum_name=forum_name, forums=forums)  # Передача списка форумов в шаблон
+
+@forum.route('/create_post', methods=['GET', 'POST'])
+def create_post():
+    form = CreatePostForm()
+    if form.validate_on_submit():
+        post = ForumPost(title=form.title.data, content=form.content.data, user_id=current_user.id)
+        db.session.add(post)
+        db.session.commit()
+        return redirect(url_for('forum.show_forum'))
+    return render_template('create_post.html', form=form)
+
+@forum.route('/edit_post/<int:post_id>', methods=['GET', 'POST'])
+def edit_post(post_id):
+    post = ForumPost.query.get_or_404(post_id)
+    if post.user_id != current_user.id: # Обработка случая, когда пользователь не автор поста
+        form = CreatePostForm()
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.content = form.content.data
+        db.session.commit()
+        return redirect(url_for('forum.forum_details', forum_id=post.id))
+    elif request.method == 'GET':
+        form.title.data = post.title
+        form.content.data = post.content
+    return render_template('edit_post.html', form=form, post=post)
