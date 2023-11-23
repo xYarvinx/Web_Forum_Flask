@@ -1,7 +1,9 @@
+#app.py
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
 import os
+
 
 
 basedir = os.path.abspath(os.path.dirname(__file__))

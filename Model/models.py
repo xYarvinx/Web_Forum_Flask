@@ -29,7 +29,7 @@ class ForumPost(db.Model):
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship('User', backref=db.backref('forum_posts', lazy=True))
-
+    pass
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(200), nullable=False)
@@ -37,6 +37,5 @@ class Comment(db.Model):
     forum_post = db.relationship('ForumPost', backref=db.backref('comments', lazy=True))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship('User', backref=db.backref('comments', lazy=True))  # Update the backref for comments relationship
-
-
+    pass
 
