@@ -5,16 +5,17 @@
 {% block content %}
     <h1>Создать новый пост</h1>
     <form method="POST">
-        <div>
-            <label for="title">Заголовок:</label><br>
-            <input type="text" id="title" name="title" size="32"><br>
-            <!-- Обработка ошибок, если они есть -->
-        </div>
-        <div>
-            <label for="content">Содержание:</label><br>
-            <textarea id="content" name="content" rows="10" cols="50"></textarea><br>
-            <!-- Обработка ошибок, если они есть -->
-        </div>
-        <input type="submit" value="Создать пост">
-    </form>
+                {{ form.csrf_token }}
+                <div class="form-group">
+                    <label for="{{ form.title.id }}">Заголовок</label>
+                    {{ form.title }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.content.id }}">Содержание</label>
+                    {{ form.content }}
+                </div>
+                <div class="form-group">
+                    {{ form.submit }}
+                </div>
+            </form>
 {% endblock %}
