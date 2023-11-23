@@ -1,14 +1,20 @@
-{% extends "base.html" %}
+<!-- forum.html -->
 
+{% extends "base.html" %}
 {% block title %}Форум{% endblock %}
 
 {% block content %}
     <h1>Добро пожаловать на форум!</h1>
 
-    <ul>
+    <div class="forum-posts">
         {% for forum in forums %}
-            <li><a href="{{ url_for('forum.forum_details', forum_id=forum.id) }}">{{ forum.title }}</a></li>
+            <a href="{{ url_for('forum.forum_details', forum_id=forum.id) }}" class="forum-post-link">
+                <div class="forum-post">
+                    <h3>{{ forum.title }}</h3>
+                </div>
+            </a>
         {% endfor %}
-    </ul>
-    {# #}
+    </div>
+
+
 {% endblock %}
