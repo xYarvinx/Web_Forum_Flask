@@ -1,17 +1,28 @@
 #forum.py
 from flask import Blueprint, render_template, request, redirect, url_for
-from forms import CreatePostForm
+from forms import CreatePostForm, CreateCommentForm
 from app import db
-from Model.models import User, ForumPost
+from Model.models import User, ForumPost, Comment
 
 forum = Blueprint('forum', __name__)
 
-@forum.route('/forum/<int:forum_id>')
+@forum.route('/forum/<int:forum_id>', methods=['GET', 'POST'])
 def forum_details(forum_id):
     forum_data = ForumPost.query.get(forum_id)
     user_data = User.query.get(forum_data.user_id)
-    return render_template('forum_details.html', forum=forum_data, user=user_data)
+    comments = (db.session.query(Comment, User).filter_by(post_id=forum_id).filter_by(user_id=User.id)
+                .order_by(-Comment.id).values(User.username, Comment.text))
 
+    # оставление комментариев
+    form = CreateCommentForm()
+    if form.validate_on_submit():
+        comment = Comment(text=form.content.data, user_id=1, post_id=forum_data.id)
+        db.session.add(comment)
+        db.session.commit()
+        return redirect(url_for('forum.forum_details', forum_id=forum_data.id))
+
+    return render_template('forum_details.html', forum=forum_data, user=user_data,
+                           comments=comments, form=form)
 
 @forum.route('/')
 def index():
@@ -48,3 +59,4 @@ def edit_post(post_id):
         form.title.data = post.title
         form.content.data = post.content
     return render_template('edit_forum.html', form=form, post=post)
+

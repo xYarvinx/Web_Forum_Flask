@@ -10,4 +10,27 @@
 
         <h2>{{ forum.content }}</h2>
     </div>
+
+    <div class = creat-a-comment>
+        <h2>Прокомментировать</h2>
+        <form method="POST">
+            {{ form.csrf_token }}
+            <div class="form-group">
+                {{ form.content }}
+            </div>
+            <div class="form-group">
+                {{ form.submit }}
+            </div>
+        </form>
+    </div>
+
+    <div class = comment-to-post>
+        {% for comment in comments %}
+            <div class="comment">
+                <h3>{{ comment.username }}</h3>
+                <h3>{{ comment.text }}</h3>
+            </div>
+        {% endfor %}
+    </div>
+
 {% endblock %}
