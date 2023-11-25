@@ -20,11 +20,11 @@ def register():
     if form.validate_on_submit():
         username = form.username.data
         email = form.email.data
-        userbd = User.query.filter_by(email=email).first()
-        if userbd.email == email :
+        userdb = User.query.filter_by(email=email).first()
+        if userdb is not None and userdb.email == email:
             flash("Пользователь с таким email уже существует")
             return redirect(url_for('auth.register'))
-        user = User(username, email)
+        user = User(username=username, email = email)
         user.password = form.password.data
 
         db.session.add(user)
