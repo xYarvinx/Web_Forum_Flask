@@ -3,6 +3,14 @@
 {% block title %}Детали форума{% endblock %}
 
 {% block content %}
+
+        {% if current_user.id == forum.user_id %}
+            <div>
+                <a href="{{ url_for('forum.edit_post', post_id=forum.id) }}"> редактировать пост </a>
+            </div>
+        {% endif %}
+
+
     <div class = forum-post>
         <h1>{{ user.username }}</h1>
 

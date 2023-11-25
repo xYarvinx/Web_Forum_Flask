@@ -2,7 +2,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from flask_login import *
 
-from forms import CreatePostForm, CreateCommentForm
+from forms import CreatePostForm, CreateCommentForm, EditPostForm
 from app import db
 from Model.models import User, ForumPost, Comment
 
@@ -49,10 +49,10 @@ def create_post():
     return render_template('create_post.html', form=form)
 
 @login_required
-@forum.route('/edit_post/<int:post_id>', methods=['GET', 'POST'])
+@forum.route('/forum/<int:post_id>/edit_post/', methods=['GET', 'POST'])
 def edit_post(post_id):
     post = ForumPost.query.get_or_404(post_id)
-    form = CreatePostForm()
+    form = EditPostForm()
 
     if form.validate_on_submit():
         post.title = form.title.data
