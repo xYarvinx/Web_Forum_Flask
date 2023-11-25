@@ -11,6 +11,7 @@ header, footer {
 }
 
 a {
+    text-decoration: none;
     color: #66b3ff; /* Цвет ссылок */
 }
 
@@ -108,7 +109,6 @@ nav li {
 }
 
 nav a {
-    text-decoration: none;
     color: #fff;
     font-weight: bold;
     font-size: 24px;
@@ -150,6 +150,7 @@ main {
     text-align: center;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    word-break: break-word;
 }
 
 .forum-post h3 {
@@ -164,6 +165,22 @@ main {
     background-color: #555;
 }
 
+.creat-a-comment {
+    padding-top: 35px;
+}
+
+.creat-a-comment form {
+    padding-top: 5px;
+}
+
+.comments-to-post{
+    display: grid;
+    gap: 20px;
+}
+
+.comment {
+    padding-top: 0;
+}
 
 
 

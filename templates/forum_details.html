@@ -18,9 +18,10 @@
 
         <h2>{{ forum.content }}</h2>
     </div>
-    {% if current_user.is_authenticated %}
+
     <div class = creat-a-comment>
-        <h2>Прокомментировать</h2>
+        <h2>Комментарии</h2>
+        {% if current_user.is_authenticated %}
         <form method="POST">
             {{ form.csrf_token }}
             <div class="form-group">
@@ -30,14 +31,20 @@
                 {{ form.submit }}
             </div>
         </form>
+        {% endif %}
     </div>
-    {% endif %}
 
-    <div class = comment-to-post>
+    <div class = comments-to-post>
         {% for comment in comments %}
-            <div class="comment">
-                <h3>{{ comment.username }}</h3>
+            <div class="forum-post comment">
+                <h3>Пользователь: {{ comment.username }}</h3>
                 <h3>{{ comment.text }}</h3>
+                {% if current_user.id == comment.user_id %}
+                    <div>
+                        <a href="{{ url_for('forum.delete_comment',
+                                comment_id=comment.comment_id) }}">  удалить комментарий </a>
+                    </div>
+                {% endif %}
             </div>
         {% endfor %}
     </div>

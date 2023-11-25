@@ -31,7 +31,3 @@ class EditPostForm(FlaskForm):
 class CreateCommentForm(FlaskForm):
     content = TextAreaField(validators=[DataRequired()])
     submit = SubmitField('Оставить комментарий')
-
-
-
-
