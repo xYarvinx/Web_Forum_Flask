@@ -10,9 +10,14 @@
         <ul>
             <li><a href="/">Домой</a></li>
             <li><a href="/forum">Форум</a></li>
+            {% if not current_user.is_authenticated %}
             <li><a href="/login">Войти</a></li>
             <li><a href="/register">Зарегистрироваться</a></li>
-            <li><a href="/create_post">Создать пост</a></li> <!-- кнопка для создания поста -->
+            {% endif %}
+            {% if current_user.is_authenticated %}
+            <li><a href="/create_post">Создать пост</a></li>
+                <li><a href="/logout"> Выйти </a></li>
+            {% endif %}<!-- кнопка для создания поста -->
             <!-- здесь можно добавить дополнительные ссылки для навигации -->
         </ul>
     </nav>

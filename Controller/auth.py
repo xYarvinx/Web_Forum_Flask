@@ -1,4 +1,7 @@
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, flash
+from flask_login import login_user, logout_user
+from werkzeug.security import check_password_hash
+
 from Model.models import User
 from app import db
 from forms import RegistrationForm, LoginForm
@@ -27,23 +30,25 @@ def register():
 
 
 
-@auth.route('/login', methods=['GET','POST'])
-def login():
+
+@auth.route('/login', methods=['POST','GET'])
+def login_post():
     form = LoginForm()
     if form.validate_on_submit():
-        #######################################################################
+        email = form.email.data
+        password = form.password.data
+        user = User.query.filter_by(email=email).first()
+        if not user or not User.verify_password(user,password):
+            flash('Please check your login details and try again.')
+            return redirect(url_for('auth.login'))
+        login_user(user)
+        return redirect(url_for('forum.show_forum'))
 
-        if form.email.data == '123123' and form.password.data == '123123':
-            # If user credentials are valid, redirect to the index page
-            return redirect(url_for('register.index'))  # Use the endpoint name 'forum.index' instead of the URL path '/forum'
-        else:
-            # If user credentials are invalid, you can render the login template again with an error message
-            return render_template('login.html', form=form, error='Invalid username or password')
     return render_template('login.html', form=form)
 
 
 
 @auth.route('/logout')
 def logout():
-    # Логика выхода пользователя
-    return redirect(url_for('index'))  # Use the endpoint name 'index' instead of the URL path '/'
+    logout_user()
+    return redirect(url_for('forum.index'))

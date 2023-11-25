@@ -1,11 +1,12 @@
 # models.py
+from flask_login import UserMixin
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
 
 
-class User(db.Model):
+class User(UserMixin,db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password_hash = db.Column(db.String(128))  # Изменить поле пароля на хэш пароля

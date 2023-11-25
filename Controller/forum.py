@@ -1,5 +1,7 @@
 #forum.py
 from flask import Blueprint, render_template, request, redirect, url_for
+from flask_login import *
+
 from forms import CreatePostForm, CreateCommentForm
 from app import db
 from Model.models import User, ForumPost, Comment
@@ -16,7 +18,7 @@ def forum_details(forum_id):
     # оставление комментариев
     form = CreateCommentForm()
     if form.validate_on_submit():
-        comment = Comment(text=form.content.data, user_id=1, post_id=forum_data.id)
+        comment = Comment(text=form.content.data, user_id=current_user.id, post_id=forum_data.id)
         db.session.add(comment)
         db.session.commit()
         return redirect(url_for('forum.forum_details', forum_id=forum_data.id))
@@ -35,16 +37,18 @@ def show_forum():
     forums = ForumPost.query.all()  # Запрос для получения всех форумов из базы данных
     return render_template('forum.html', forum_name=forum_name, forums=forums)  # Передача списка форумов в шаблон
 
+@login_required
 @forum.route('/create_post', methods=['GET', 'POST'])
 def create_post():
     form = CreatePostForm()
     if form.validate_on_submit():
-        post = ForumPost(title=form.title.data, content=form.content.data, user_id = 1)
+        post = ForumPost(title=form.title.data, content=form.content.data, user_id = current_user.id)
         db.session.add(post)
         db.session.commit()
         return redirect(url_for('forum.index'))
     return render_template('create_post.html', form=form)
 
+@login_required
 @forum.route('/edit_post/<int:post_id>', methods=['GET', 'POST'])
 def edit_post(post_id):
     post = ForumPost.query.get_or_404(post_id)

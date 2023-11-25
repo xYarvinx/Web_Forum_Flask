@@ -10,7 +10,7 @@
 
         <h2>{{ forum.content }}</h2>
     </div>
-
+    {% if current_user.is_authenticated %}
     <div class = creat-a-comment>
         <h2>Прокомментировать</h2>
         <form method="POST">
@@ -23,6 +23,7 @@
             </div>
         </form>
     </div>
+    {% endif %}
 
     <div class = comment-to-post>
         {% for comment in comments %}
