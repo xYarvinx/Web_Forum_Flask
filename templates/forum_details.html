@@ -18,9 +18,10 @@
 
         <h2>{{ forum.content }}</h2>
     </div>
-    {% if current_user.is_authenticated %}
+
     <div class = creat-a-comment>
         <h2>Комментарии</h2>
+        {% if current_user.is_authenticated %}
         <form method="POST">
             {{ form.csrf_token }}
             <div class="form-group">
@@ -30,8 +31,8 @@
                 {{ form.submit }}
             </div>
         </form>
+        {% endif %}
     </div>
-    {% endif %}
 
     <div class = comments-to-post>
         {% for comment in comments %}
