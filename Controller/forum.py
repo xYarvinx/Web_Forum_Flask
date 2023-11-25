@@ -45,7 +45,7 @@ def create_post():
         post = ForumPost(title=form.title.data, content=form.content.data, user_id = current_user.id)
         db.session.add(post)
         db.session.commit()
-        return redirect(url_for('forum.index'))
+        return redirect(url_for('forum.show_forum'))
     return render_template('create_post.html', form=form)
 
 @login_required
