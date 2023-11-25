@@ -5,6 +5,14 @@
 
 {% block content %}
     <h1>Добро пожаловать на форум!</h1>
+    {% if not current_user.is_authenticated %}
+            <div class="">
+                <p>Если вы хотите тоже писать посты то</p>
+                <a href="{{ url_for('auth.login') }}">Войдите</a>
+                <div>или</div>
+                <a href="{{ url_for('auth.register') }}">Зарегестрируйтесь</a>.
+            </div>
+    {% endif %}
 
     <div class="forum-posts">
         {% for forum in forums %}
