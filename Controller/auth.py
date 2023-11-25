@@ -18,8 +18,13 @@ auth = Blueprint('auth', __name__)
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-
-        user = User(username=form.username.data, email=form.email.data)
+        username = form.username.data
+        email = form.email.data
+        userbd = User.query.filter_by(email=email).first()
+        if userbd.email == email :
+            flash("Пользователь с таким email уже существует")
+            return redirect(url_for('auth.register'))
+        user = User(username, email)
         user.password = form.password.data
 
         db.session.add(user)
@@ -32,7 +37,7 @@ def register():
 
 
 @auth.route('/login', methods=['POST','GET'])
-def login_post():
+def login():
     form = LoginForm()
     if form.validate_on_submit():
         email = form.email.data
