@@ -51,9 +51,11 @@ def create_post():
 @login_required
 @forum.route('/forum/<int:post_id>/edit_post/', methods=['GET', 'POST'])
 def edit_post(post_id):
+
     post = ForumPost.query.get_or_404(post_id)
     form = EditPostForm()
-
+    if current_user.id != post.user_id:
+        return redirect(url_for('forum.forum_details', forum_id=post.id))
     if form.validate_on_submit():
         post.title = form.title.data
         post.content = form.content.data
