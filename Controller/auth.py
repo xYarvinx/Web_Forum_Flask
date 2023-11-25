@@ -29,7 +29,7 @@ def register():
 
         db.session.add(user)
         db.session.commit()
-
+        login_user(user)
         return redirect(url_for('forum.index'))
     return render_template('register.html', form=form)
 
