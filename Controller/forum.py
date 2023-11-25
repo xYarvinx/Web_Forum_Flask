@@ -13,7 +13,8 @@ def forum_details(forum_id):
     forum_data = ForumPost.query.get(forum_id)
     user_data = User.query.get(forum_data.user_id)
     comments = (db.session.query(Comment, User).filter_by(post_id=forum_id).filter_by(user_id=User.id)
-                .order_by(-Comment.id).values(User.username, Comment.text))
+                .order_by(-Comment.id).values(User.username, Comment.text,
+                                              User.id.label('user_id'), Comment.id.label('comment_id')))
 
     # оставление комментариев
     form = CreateCommentForm()
@@ -66,3 +67,11 @@ def edit_post(post_id):
         form.content.data = post.content
     return render_template('edit_forum.html', form=form, post=post)
 
+@login_required
+@forum.route('/forum_details/<int:comment_id>', methods=['GET', 'POST'])
+def delete_comment(comment_id):
+    comment = Comment.query.get_or_404(comment_id)
+    post = ForumPost.query.get_or_404(comment.post_id)
+    db.session.delete(comment)
+    db.session.commit()
+    return redirect(url_for('forum.forum_details', forum_id=post.id))
