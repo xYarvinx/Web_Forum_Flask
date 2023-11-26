@@ -68,7 +68,7 @@ def edit_post(post_id):
     return render_template('edit_forum.html', form=form, post=post)
 
 @login_required
-@forum.route('/forum_details/<int:comment_id>', methods=['GET', 'POST'])
+ВАв@forum.route('/forum_details/<int:comment_id>', methods=['GET','DELETE'])
 def delete_comment(comment_id):
     comment = Comment.query.get_or_404(comment_id)
     post = ForumPost.query.get_or_404(comment.post_id)
