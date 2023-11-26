@@ -56,12 +56,12 @@ def edit_post(post_id):
     post = ForumPost.query.get_or_404(post_id)
     form = EditPostForm()
     if current_user.id != post.user_id:
-        return redirect(url_for('forum.forum_details', forum_id=post.id))
+        return redirect(url_for('forum.forum_details', post_id=post.id))
     if form.validate_on_submit():
         post.title = form.title.data
         post.content = form.content.data
         db.session.commit()
-        return redirect(url_for('forum.forum_details', forum_id=post.id))
+        return redirect(url_for('forum.forum_details', post_id=post.id))
     elif request.method == 'GET':
         form.title.data = post.title
         form.content.data = post.content
@@ -74,7 +74,7 @@ def delete_comment(comment_id):
     post = ForumPost.query.get_or_404(comment.post_id)
     db.session.delete(comment)
     db.session.commit()
-    return redirect(url_for('forum.forum_details', forum_id=post.id))
+    return redirect(url_for('forum.forum_details', post_id=post.id))
 
 
 @login_required
@@ -83,7 +83,7 @@ def delete_post(post_id):
     if request.method == 'GET':
         post = ForumPost.query.get_or_404(post_id)
         if current_user.id != post.user_id:
-            return redirect(url_for('forum.forum_details', forum_id=post.id))
+            return redirect(url_for('forum.forum_details', post_id=post.id))
 
         # Querying and deleting comments related to the post
         comments = Comment.query.filter_by(post_id=post_id)
