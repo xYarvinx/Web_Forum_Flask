@@ -16,7 +16,7 @@
 
     <div class="forum-posts">
         {% for forum in forums %}
-            <a href="{{ url_for('forum.forum_details', forum_id=forum.id) }}" class="forum-post-link">
+            <a href="{{ url_for('forum.forum_details', post_id=forum.id) }}" class="forum-post-link">
                 <div class="forum-post">
                     <h3>{{ forum.title }}</h3>
                 </div>

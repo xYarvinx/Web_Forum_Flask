@@ -7,6 +7,7 @@
         {% if current_user.id == forum.user_id %}
             <div>
                 <a href="{{ url_for('forum.edit_post', post_id=forum.id) }}"> редактировать пост </a>
+                <a href="{{ url_for('forum.delete_post', post_id=forum.id) }}"> Удалить пост </a>
             </div>
         {% endif %}
 
