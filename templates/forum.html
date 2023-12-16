@@ -6,12 +6,21 @@
 {% block content %}
     <h1>Добро пожаловать на форум!</h1>
     {% if not current_user.is_authenticated %}
-            <div class="">
-                <p>Если вы хотите тоже писать посты то</p>
-                <a href="{{ url_for('auth.login') }}">Войдите</a>
-                <div>или</div>
-                <a href="{{ url_for('auth.register') }}">Зарегестрируйтесь</a>.
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-md-6 offset-md-3">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <p class="card-text">Если вы хотите тоже писать посты, то</p>
+                                <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Войдите</a>
+                                <div class="mt-2">или</div>
+                                <a href="{{ url_for('auth.register') }}" class="btn btn-success">Зарегистрируйтесь</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
     {% endif %}
 
     <div class="forum-posts">

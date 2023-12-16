@@ -5,35 +5,46 @@
 {% block content %}
 
         {% if current_user.id == forum.user_id %}
-            <div>
-                <a href="{{ url_for('forum.edit_post', post_id=forum.id) }}"> редактировать пост </a>
-                <a href="{{ url_for('forum.delete_post', post_id=forum.id) }}"> Удалить пост </a>
+            <div class="mt-3">
+                <a href="{{ url_for('forum.edit_post', post_id=forum.id) }}" class="btn btn-primary mr-2">
+                    <i class="fas fa-edit"></i> Редактировать пост
+                </a>
+                <a href="{{ url_for('forum.delete_post', post_id=forum.id) }}" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Удалить пост
+                </a>
             </div>
         {% endif %}
 
 
     <div class = forum-post>
-        <h1>{{ user.username }}</h1>
+        <h5> Автор: {{ user.username }}</h5>
 
-        <h3>{{ forum.title }}</h3>
+        <h1>{{ forum.title }}</h1>
 
         <h2>{{ forum.content }}</h2>
     </div>
 
-    <div class = creat-a-comment>
-        <h2>Комментарии</h2>
-        {% if current_user.is_authenticated %}
-        <form method="POST">
-            {{ form.csrf_token }}
-            <div class="form-group">
-                {{ form.content }}
-            </div>
-            <div class="form-group">
-                {{ form.submit }}
-            </div>
-        </form>
-        {% endif %}
-    </div>
+<div class="creat-a-comment mt-4">
+    <h2 class="mb-3">Комментарии</h2>
+
+    {% if current_user.is_authenticated %}
+    <form method="POST">
+        {{ form.csrf_token }}
+
+        <div class="form-group">
+            <label for="commentContent" class="form-label">Добавить комментарий:</label>
+            {{ form.content(class="form-control", id="commentContent") }}
+        </div>
+
+        <div class="form-group">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
+    {% else %}
+    <p class="text-muted">Чтобы добавить комментарий, пожалуйста, <a href="{{ url_for('auth.login') }}">войдите</a>.</p>
+    {% endif %}
+</div>
+
 
     <div class = comments-to-post>
         {% for comment in comments %}
@@ -41,10 +52,12 @@
                 <h3>Пользователь: {{ comment.username }}</h3>
                 <h3>{{ comment.text }}</h3>
                 {% if current_user.id == comment.user_id %}
-                    <div>
-                        <a href="{{ url_for('forum.delete_comment',
-                                comment_id=comment.comment_id) }}">  удалить комментарий </a>
+                   <div class="mt-3">
+                    <a href="{{ url_for('forum.delete_comment', comment_id=comment.comment_id) }}" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> Удалить комментарий
+                    </a>
                     </div>
+
                 {% endif %}
             </div>
         {% endfor %}
